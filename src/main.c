@@ -6,7 +6,7 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:52:02 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/02 15:19:14 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/02 16:24:50 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ static int	cmd_in(char *file, int *fd, t_args *data)
 {
 	fd[READ_END] = open(file, O_RDONLY);
 	if (fd[READ_END] == -1)
+	{
+		cleanup(data->cmd);
 		err_exit(file);
+	}
 	dup2(fd[READ_END], STDIN_FILENO);
 	dup2(fd[WRITE_END], STDOUT_FILENO);
 	close(fd[READ_END]);
