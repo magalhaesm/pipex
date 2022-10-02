@@ -6,7 +6,7 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:50:58 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/02 15:18:14 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:06:31 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 # define READ_END 0
 # define WRITE_END 1
 
-#include "libft.h"
+# include "libft.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/wait.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <sys/wait.h>
 
 typedef struct s_args
 {
@@ -29,10 +30,11 @@ typedef struct s_args
 	char	**argv;
 	char	**envp;
 	char	***cmd;
-} t_args;
+}	t_args;
 
 int		pfork(void);
 void	eval(int argc, char **argv, char **envp, t_args *data);
+void	execp(char **cmd, t_args *data);
 void	cleanup(char ***cmd);
 void	err_exit(char *msg);
 

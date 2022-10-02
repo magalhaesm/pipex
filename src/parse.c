@@ -6,7 +6,7 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 15:00:35 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/02 16:06:12 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:21:35 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ void	eval(int argc, char **argv, char **envp, t_args *data)
 	int		n;
 	int		commands;
 	char	***cmd;
-	char	**syspath = ft_split(getpath(envp), ':');
+	char	**syspath;
 
+	syspath = ft_split(getpath(envp), ':');
 	n = 0;
 	commands = argc - 3;
 	cmd = malloc(sizeof(cmd) * (commands + 1));

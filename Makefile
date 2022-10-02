@@ -1,6 +1,6 @@
 NAME = pipex
 
-FILES = main.c parse.c error.c utils.c
+FILES = main.c parse.c utils.c
 SRC = $(addprefix src/, $(FILES))
 INCLUDE = include/pipex.h libft/libft.h
 LIBFT = libft/libft.a

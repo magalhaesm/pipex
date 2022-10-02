@@ -6,15 +6,15 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:52:02 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/02 16:24:50 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:09:12 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 static int		pipex(t_args *data);
-static int		cmd_in(char *file, int *fd, t_args *data);
-static int		cmd_out(char *file, int *fd, t_args *data);
+static void		cmd_in(char *file, int *fd, t_args *data);
+static void		cmd_out(char *file, int *fd, t_args *data);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -56,7 +56,7 @@ static int	pipex(t_args *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	cmd_in(char *file, int *fd, t_args *data)
+static void	cmd_in(char *file, int *fd, t_args *data)
 {
 	fd[READ_END] = open(file, O_RDONLY);
 	if (fd[READ_END] == -1)
@@ -68,25 +68,23 @@ static int	cmd_in(char *file, int *fd, t_args *data)
 	dup2(fd[WRITE_END], STDOUT_FILENO);
 	close(fd[READ_END]);
 	close(fd[WRITE_END]);
-	// TODO: criar ft_exec
-	execve(data->cmd[0][0], data->cmd[0], data->envp);
-	// TODO: adicionar mensagem de erro
-	perror(data->cmd[0][0]);
-	exit(127);
+	execp(data->cmd[0], data);
 }
 
-static int	cmd_out(char *file, int *fd, t_args *data)
+static void	cmd_out(char *file, int *fd, t_args *data)
 {
 	int	file_out;
+
 	file_out = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (file_out == -1)
+	{
+		cleanup(data->cmd);
 		err_exit(file);
+	}
 	dup2(fd[READ_END], STDIN_FILENO);
 	dup2(file_out, STDOUT_FILENO);
 	close(fd[READ_END]);
 	close(fd[WRITE_END]);
 	close(file_out);
-	execve(data->cmd[1][0], data->cmd[1], data->envp);
-	perror(data->cmd[1][0]);
-	exit(127);
+	execp(data->cmd[1], data);
 }
