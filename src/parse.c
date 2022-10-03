@@ -6,85 +6,47 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 15:00:35 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/03 02:34:14 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/03 13:50:38 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 static char	*getpath(char **envp);
-static void	abspath(char **cmd, char **syspath);
-static void	free_strarr(char **path);
 
-void	eval(int argc, char **argv, char **envp, t_args *data)
+char	*abspath(char *argv, char **environ)
 {
 	int		n;
-	int		commands;
-	char	***cmd;
-	char	**syspath;
-
-	commands = argc - 3;
-	cmd = malloc(sizeof(cmd) * (commands + 1));
-	if (cmd == NULL)
-		err_exit("malloc");
-	syspath = ft_split(getpath(envp), ':');
-	n = 0;
-	while (n < commands)
-	{
-		cmd[n] = ft_split(argv[n + 2], ' ');
-		abspath(cmd[n], syspath);
-		n++;
-	}
-	free_strarr(syspath);
-	cmd[n] = NULL;
-	data->cmd = cmd;
-	data->argc = argc;
-	data->argv = argv;
-	data->envp = envp;
-}
-
-void	cleanup(char ***cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd[i])
-		free_strarr(cmd[i++]);
-	free(cmd);
-}
-
-// Replace cmd with your full path if it exists, else leave as is.
-static void	abspath(char **cmd, char **syspath)
-{
-	int		i;
 	char	*bin;
 	char	*fullpath;
+	char	**syspath;
 
-	i = 0;
-	bin = ft_strjoin("/", cmd[0]);
-	while (syspath[i])
+	n = 0;
+	syspath = ft_split(getpath(environ), ':');
+	bin = ft_strjoin("/", argv);
+	while (syspath[n])
 	{
-		fullpath = ft_strjoin(syspath[i++], bin);
+		fullpath = ft_strjoin(syspath[n++], bin);
 		if (access(fullpath, F_OK) == 0)
 		{
-			free(cmd[0]);
 			free(bin);
-			cmd[0] = fullpath;
-			return ;
+			return (fullpath);
 		}
 		free(fullpath);
 	}
+	free_strarr(syspath);
 	free(bin);
+	return (NULL);
 }
 
-static void	free_strarr(char **path)
+void	free_strarr(char **arr)
 {
 	int	i;
 
 	i = 0;
-	while (path[i])
-		free(path[i++]);
-	free(path);
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
 static char	*getpath(char **envp)

@@ -6,7 +6,7 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:50:58 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/03 02:35:26 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/03 13:37:15 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,10 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 
-typedef struct s_args
-{
-	int		argc;
-	char	**argv;
-	char	**envp;
-	char	***cmd;
-}	t_args;
-
+void	execp(char *argv, char **envp);
+char	*abspath(char *argv, char **environ);
+void	free_strarr(char **arr);
 int		pfork(void);
-void	eval(int argc, char **argv, char **envp, t_args *data);
-void	execp(char **cmd, t_args *data);
-void	cleanup(char ***cmd);
-void	err_exit(char *msg);
+void	err_exit(const char *msg);
 
 #endif
