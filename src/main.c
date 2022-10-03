@@ -6,7 +6,7 @@
 /*   By: mdias-ma <mdias-ma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 17:52:02 by mdias-ma          #+#    #+#             */
-/*   Updated: 2022/10/02 18:00:43 by mdias-ma         ###   ########.fr       */
+/*   Updated: 2022/10/02 21:35:45 by mdias-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	cmd_out(char *file, int *fd, t_args *data)
 {
 	int	file_out;
 
-	file_out = open(file, O_WRONLY | O_CREAT | O_TRUNC, 644);
+	file_out = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (file_out == -1)
 	{
 		cleanup(data->cmd);
